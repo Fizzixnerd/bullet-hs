@@ -43,6 +43,7 @@ import qualified Linear as L
 {#pointer *collision_world as ^ newtype#}
 {#pointer *closest_ray_result_callback as ^ newtype#}
 {#pointer *ray_result_callback as ^ newtype#}
+{#pointer *generic_6_dof_constraint as ^ newtype#}
 
 type Mass = CFloat
 
@@ -296,10 +297,10 @@ class IsCollisionWorld cw where
 
 rayTest :: (IsCollisionWorld cw, IsRayResultCallback rrc)
         => cw
+        -> CFloat -- ^ `from' vector
         -> CFloat
         -> CFloat
-        -> CFloat
-        -> CFloat
+        -> CFloat -- ^ `to' vector
         -> CFloat
         -> CFloat
         -> rrc
@@ -499,6 +500,19 @@ instance IsCollisionObject RigidBody
    alloca- `CFloat' peek* } -> `()'
 #}
 
+{#fun rb_set_angular_velocity as ^
+ { `RigidBody',
+   `CFloat',
+   `CFloat',
+   `CFloat' } -> `()'
+#}
+
+{#fun rb_get_angular_velocity as ^
+ { `RigidBody',
+   alloca- `CFloat' peek*,
+   alloca- `CFloat' peek*,
+   alloca- `CFloat' peek* } -> `()'
+#}
 
 {#fun get_total_force as ^
  { `RigidBody',
@@ -785,6 +799,24 @@ instance IsTypedConstraint Point2PointConstraint
    `CFloat',
    `CFloat',
    `CFloat' } -> `Point2PointConstraint'
+#}
+
+-- | btGeneric6DofConstraint
+instance IsTypedConstraint Generic6DofConstraint
+
+{#fun new_generic_6_dof_constraint as ^
+ { `RigidBody',
+   `RigidBody',
+   `Transform',
+   `Transform',
+   `CInt' } -> `Generic6DofConstraint'
+#}
+
+{#fun set_limit as ^
+ { `Generic6DofConstraint',
+   `CInt',
+   `CFloat',
+   `CFloat' } -> `()'
 #}
 
 -- | btDefaultSerializer

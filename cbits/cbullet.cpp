@@ -10,11 +10,11 @@ extern "C" {
   broadphase_interface* new_broadphase_interface() {
     return reinterpret_cast<broadphase_interface*>(new btDbvtBroadphase());
   }
-  
+
   void free_broadphase_interface(broadphase_interface* broadphase) {
     delete reinterpret_cast<btDbvtBroadphase*>(broadphase);
   }
-  
+
   overlapping_pair_cache* get_overlapping_pair_cache
   (broadphase_interface* broadphase) {
     return reinterpret_cast<overlapping_pair_cache*>
@@ -61,7 +61,7 @@ extern "C" {
     return reinterpret_cast<constraint_solver*>
       (new btSequentialImpulseConstraintSolver());
   }
-  
+
   void free_constraint_solver(constraint_solver* solver) {
     delete reinterpret_cast<btConstraintSolver*>(solver);
   }
@@ -88,7 +88,7 @@ extern "C" {
     return reinterpret_cast<btCollisionWorld::ClosestRayResultCallback*>
       (callback)->hasHit();
   }
-  
+
   const collision_object* rrc_get_hit(ray_result_callback* callback) {
     return reinterpret_cast<const collision_object*>
       (reinterpret_cast<btCollisionWorld::ClosestRayResultCallback*>
@@ -136,7 +136,7 @@ extern "C" {
     return reinterpret_cast<btDynamicsWorld*>(world)->
       stepSimulation(time_step, mss, fts);
   }
-  
+
   void add_rigid_body(dynamics_world* world, rigid_body* rigid_body) {
     reinterpret_cast<btDynamicsWorld*>(world)->
       addRigidBody(reinterpret_cast<btRigidBody*>(rigid_body));
@@ -175,7 +175,7 @@ extern "C" {
   int get_num_constraints(dynamics_world* world) {
     return reinterpret_cast<btDynamicsWorld*>(world)->getNumConstraints();
   }
-  
+
   typed_constraint* get_constraint(dynamics_world* world, int idx) {
     return reinterpret_cast<typed_constraint*>
       (reinterpret_cast<btDynamicsWorld*>(world)->getConstraint(idx));
@@ -200,7 +200,7 @@ extern "C" {
   collision_object* new_collision_object() {
     return reinterpret_cast<collision_object*>(new btCollisionObject());
   }
-  
+
   void free_collision_object(collision_object* obj) {
     delete reinterpret_cast<btCollisionObject*>(obj);
   }
@@ -358,6 +358,17 @@ extern "C" {
     *z = g[2];
   }
 
+  void rb_set_angular_velocity(rigid_body* body, scalar x, scalar y, scalar z) {
+    reinterpret_cast<btRigidBody*>(body)->setAngularVelocity(btVector3(x, y, z));
+  }
+
+  void rb_get_angular_velocity(rigid_body* body, scalar* x, scalar* y, scalar* z) {
+    btVector3 g = reinterpret_cast<btRigidBody*>(body)->getAngularVelocity();
+    *x = g[0];
+    *y = g[1];
+    *z = g[2];
+  }
+
   void get_total_force(rigid_body* body, scalar* x, scalar* y, scalar* z) {
     btVector3 F = reinterpret_cast<btRigidBody*>(body)->getTotalForce();
     *x = F[0];
@@ -460,7 +471,7 @@ extern "C" {
 					     scalar plane_constant) {
     return reinterpret_cast<static_plane_shape*>(new btStaticPlaneShape(btVector3(x, y ,z), plane_constant));
   }
-  
+
   void free_static_plane_shape(static_plane_shape* static_plane_shape) {
     delete reinterpret_cast<btStaticPlaneShape*>(static_plane_shape);
   }
@@ -546,9 +557,9 @@ extern "C" {
 
   // btPoint2PointConstraint
   point2point_constraint* new_point2point_constraint(rigid_body* rigid_body,
-					       scalar pivot_x,
-					       scalar pivot_y,
-					       scalar pivot_z) {
+                                                     scalar pivot_x,
+                                                     scalar pivot_y,
+                                                     scalar pivot_z) {
     return reinterpret_cast<point2point_constraint*>
       (new btPoint2PointConstraint
        (*reinterpret_cast<btRigidBody*>(rigid_body),
@@ -559,11 +570,34 @@ extern "C" {
     delete reinterpret_cast<btPoint2PointConstraint*>(p2p);
   }
 
+  // btGeneric6DofConstraint
+  generic_6_dof_constraint* new_generic_6_dof_constraint(rigid_body* body1,
+                                                         rigid_body* body2,
+                                                         transform* frame1,
+                                                         transform* frame2,
+                                                         int use_linear_frame1) {
+    btRigidBody* b1 = reinterpret_cast<btRigidBody*>(body1);
+    btRigidBody* b2 = reinterpret_cast<btRigidBody*>(body2);
+    btTransform* f1 = reinterpret_cast<btTransform*>(frame1);
+    btTransform* f2 = reinterpret_cast<btTransform*>(frame2);
+    btGeneric6DofConstraint* ret = new btGeneric6DofConstraint(*b1, *b2, *f1, *f2,
+                                                               use_linear_frame1);
+    return reinterpret_cast<generic_6_dof_constraint*>(ret);
+  }
+
+  void set_limit(generic_6_dof_constraint* constraint,
+                 int axis,
+                 scalar low,
+                 scalar high) {
+    reinterpret_cast<btGeneric6DofConstraint*>(constraint)->
+      setLimit(axis, low, high);
+  }
+
   // btDefaultSerializer
   serializer* new_default_serializer() {
     return reinterpret_cast<serializer*>(new btDefaultSerializer());
   }
-  
+
   void free_serializer(serializer* serializer) {
     delete reinterpret_cast<btSerializer*>(serializer);
   }
@@ -656,7 +690,7 @@ extern "C" {
     reinterpret_cast<btKinematicCharacterController*>(kcc)->
       setLinearDamping(d);
   }
-  
+
   scalar get_linear_damping(kinematic_character_controller* kcc) {
     return reinterpret_cast<btKinematicCharacterController*>(kcc)->
       getLinearDamping();
@@ -666,7 +700,7 @@ extern "C" {
     reinterpret_cast<btKinematicCharacterController*>(kcc)->
       setAngularDamping(d);
   }
-  
+
   scalar get_angular_damping(kinematic_character_controller* kcc) {
     return reinterpret_cast<btKinematicCharacterController*>(kcc)->
       getAngularDamping();
@@ -681,7 +715,7 @@ extern "C" {
     reinterpret_cast<btKinematicCharacterController*>(kcc)->
       warp(btVector3(x, y, z));
   }
-  
+
   void set_step_height(kinematic_character_controller* kcc, scalar step_height) {
     reinterpret_cast<btKinematicCharacterController*>(kcc)->
       setStepHeight(step_height);
@@ -754,7 +788,7 @@ extern "C" {
     *gy = g[1];
     *gz = g[2];
   }
-    
+
   void set_max_slope(kinematic_character_controller* kcc, scalar slope_radians) {
     reinterpret_cast<btKinematicCharacterController*>(kcc)->
       setMaxSlope(slope_radians);

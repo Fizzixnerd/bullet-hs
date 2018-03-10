@@ -40,6 +40,7 @@ extern "C" {
   typedef struct ray_result_callback { char unused; } ray_result_callback;
   typedef struct contact_result_callback { char unused; } contact_result_callback;
   typedef struct collision_world { char unused; } collision_world;
+  typedef struct generic_6_dof_constraint { char unused; } generic_6_dof_constraint;
   typedef float scalar;
 
   // btDbvtBroadphase
@@ -158,6 +159,8 @@ extern "C" {
   void rb_get_gravity(rigid_body* body, scalar* x, scalar* y, scalar* z);
   void rb_set_linear_velocity(rigid_body* body, scalar x, scalar y, scalar z);
   void rb_get_linear_velocity(rigid_body* body, scalar* x, scalar* y, scalar* z);
+  void rb_set_angular_velocity(rigid_body* body, scalar x, scalar y, scalar z);
+  void rb_get_angular_velocity(rigid_body* body, scalar* x, scalar* y, scalar* z);
   void get_total_force(rigid_body* body, scalar* x, scalar* y, scalar* z);
   void get_total_torque(rigid_body* body, scalar* x, scalar* y, scalar* z);
   void apply_force(rigid_body* body,
@@ -205,7 +208,7 @@ extern "C" {
   // btSphereShape
   sphere_shape* new_sphere_shape(scalar radius);
   void free_sphere_shape(sphere_shape* sphere_shape);
-  
+
   // btBoxShape
   box_shape* new_box_shape(scalar half_x, scalar half_y, scalar half_z);
   void free_box_shape(box_shape* box_shape);
@@ -241,7 +244,18 @@ extern "C" {
 						     scalar pivot_x,
 						     scalar pivot_y,
 						     scalar pivot_z);
-  void free_point2point_constraint(point2point_constraint* p2p);
+
+  // btGeneric6DofConstraint
+
+  generic_6_dof_constraint* new_generic_6_dof_constraint(rigid_body* body1,
+                                                         rigid_body* body2,
+                                                         transform* frame1,
+                                                         transform* frame2,
+                                                         int use_linear_frame1);
+  void set_limit(generic_6_dof_constraint* constraint,
+                 int axis,
+                 scalar low,
+                 scalar high);
 
   // btDefaultSerializer
   serializer* new_default_serializer();
