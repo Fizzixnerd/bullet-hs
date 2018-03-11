@@ -385,10 +385,23 @@ getCollisionShape = getCollisionShape_ . toCollisionObject
 setCollisionShape :: (IsCollisionShape cs, IsCollisionObject co) => co -> cs -> IO ()
 setCollisionShape co cs = setCollisionShape_ (toCollisionObject co) (toCollisionShape cs)
 
-{#fun set_activation_state as ^
+
+activationStateActive :: Int
+activationStateActive = 1
+
+activationStateSleeping :: Int
+activationStateSleeping = 2
+
+activationStateDisableDeactivation :: Int
+activationStateDisableDeactivation = 4
+
+{#fun set_activation_state as setActivationState_
  { `CollisionObject',
    `Int' } -> `()'
 #}
+
+setActivationState :: IsCollisionObject co => co -> Int -> IO ()
+setActivationState = setActivationState_ . toCollisionObject
 
 {#fun get_interpolation_linear_velocity as ^
  { `CollisionObject',
