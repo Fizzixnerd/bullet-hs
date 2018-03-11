@@ -132,6 +132,10 @@ extern "C" {
 					 scalar* z);
   void set_interpolation_linear_velocity(collision_object* obj, scalar x, scalar y,
 					 scalar z);
+  void get_interpolation_angular_velocity(collision_object* obj, scalar* x, scalar* y,
+                                         scalar* z);
+  void set_interpolation_angular_velocity(collision_object* obj, scalar x, scalar y,
+                                         scalar z);
   void set_user_index(collision_object* obj, int n);
   int get_user_index(collision_object* obj);
 

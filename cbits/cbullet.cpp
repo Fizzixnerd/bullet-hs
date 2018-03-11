@@ -268,6 +268,21 @@ extern "C" {
       setInterpolationLinearVelocity(btVector3(x, y, z));
   }
 
+  void get_interpolation_angular_velocity(collision_object* obj, scalar* x, scalar* y,
+                                          scalar* z) {
+    btVector3 v = reinterpret_cast<btCollisionObject*>(obj)->
+      getInterpolationAngularVelocity();
+    *x = v[0];
+    *y = v[1];
+    *z = v[2];
+  }
+
+  void set_interpolation_angular_velocity(collision_object* obj, scalar x, scalar y,
+                                          scalar z) {
+    reinterpret_cast<btCollisionObject*>(obj)->
+      setInterpolationAngularVelocity(btVector3(x, y, z));
+  }
+
   void set_user_index(collision_object* obj, int n) {
     reinterpret_cast<btCollisionObject*>(obj)->
       setUserIndex(n);

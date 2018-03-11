@@ -404,6 +404,21 @@ setCollisionShape co cs = setCollisionShape_ (toCollisionObject co) (toCollision
    `CFloat' } -> `()'
 #}
 
+{#fun get_interpolation_angular_velocity as ^
+ { `CollisionObject',
+   alloca- `CFloat' peek*,
+   alloca- `CFloat' peek*,
+   alloca- `CFloat' peek* } -> `()'
+#}
+
+{#fun set_interpolation_angular_velocity as ^
+ { `CollisionObject',
+   `CFloat',
+   `CFloat',
+   `CFloat' } -> `()'
+#}
+
+
 {#fun set_user_index as setUserIndex_
  { `CollisionObject',
    `Int' } -> `()'
