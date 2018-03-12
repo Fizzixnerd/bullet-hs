@@ -165,6 +165,9 @@ extern "C" {
   void rb_get_linear_velocity(rigid_body* body, scalar* x, scalar* y, scalar* z);
   void rb_set_angular_velocity(rigid_body* body, scalar x, scalar y, scalar z);
   void rb_get_angular_velocity(rigid_body* body, scalar* x, scalar* y, scalar* z);
+  void rb_set_damping(rigid_body* body, scalar ld, scalar ad);
+  scalar rb_get_linear_damping(rigid_body* body);
+  scalar rb_get_angular_damping(rigid_body* body);
   void get_total_force(rigid_body* body, scalar* x, scalar* y, scalar* z);
   void get_total_torque(rigid_body* body, scalar* x, scalar* y, scalar* z);
   void apply_force(rigid_body* body,
@@ -296,10 +299,10 @@ extern "C" {
 			       scalar* vx,
 			       scalar* vy,
 			       scalar* vz);
-  void set_linear_damping(kinematic_character_controller* kcc, scalar d);
-  scalar get_linear_damping(kinematic_character_controller* kcc);
-  void set_angular_damping(kinematic_character_controller* kcc, scalar d);
-  scalar get_angular_damping(kinematic_character_controller* kcc);
+  void kcc_set_linear_damping(kinematic_character_controller* kcc, scalar d);
+  scalar kcc_get_linear_damping(kinematic_character_controller* kcc);
+  void kcc_set_angular_damping(kinematic_character_controller* kcc, scalar d);
+  scalar kcc_get_angular_damping(kinematic_character_controller* kcc);
   void reset(kinematic_character_controller* kcc, collision_world* collision_world);
   void warp(kinematic_character_controller* kcc, scalar x, scalar y, scalar z);
   void set_step_height(kinematic_character_controller* kcc, scalar step_height);

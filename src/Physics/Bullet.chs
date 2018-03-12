@@ -542,6 +542,20 @@ instance IsCollisionObject RigidBody
    alloca- `CFloat' peek* } -> `()'
 #}
 
+{#fun rb_set_damping as ^
+ { `RigidBody',
+   `CFloat',
+   `CFloat' } -> `()'
+#}
+
+{#fun rb_get_linear_damping as ^
+ { `RigidBody' } -> `CFloat'
+#}
+
+{#fun rb_get_angular_damping as ^
+ { `RigidBody' } -> `CFloat'
+#}
+
 {#fun get_total_force as ^
  { `RigidBody',
    alloca- `CFloat' peek*,
@@ -947,21 +961,21 @@ instance New KinematicCharacterController (PairCachingGhostObject, ConvexShape, 
    alloca- `CFloat' peek* } -> `()'
 #}
 
-{#fun set_linear_damping as ^
+{#fun kcc_set_linear_damping as ^
  { `KinematicCharacterController',
    `CFloat' } -> `()'
 #}
 
-{#fun get_linear_damping as ^
+{#fun kcc_get_linear_damping as ^
  { `KinematicCharacterController' } -> `CFloat'
 #}
 
-{#fun set_angular_damping as ^
+{#fun kcc_set_angular_damping as ^
  { `KinematicCharacterController',
    `CFloat' } -> `()'
 #}
 
-{#fun get_angular_damping as ^
+{#fun kcc_get_angular_damping as ^
  { `KinematicCharacterController' } -> `CFloat'
 #}
 

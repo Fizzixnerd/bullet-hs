@@ -384,6 +384,18 @@ extern "C" {
     *z = g[2];
   }
 
+  void rb_set_damping(rigid_body* body, scalar ld, scalar ad) {
+    reinterpret_cast<btRigidBody*>(body)->setDamping(ld, ad);
+  }
+
+  scalar rb_get_linear_damping(rigid_body* body) {
+    return reinterpret_cast<btRigidBody*>(body)->getLinearDamping();
+  }
+
+  scalar rb_get_angular_damping(rigid_body* body) {
+    return reinterpret_cast<btRigidBody*>(body)->getAngularDamping();
+  }
+
   void get_total_force(rigid_body* body, scalar* x, scalar* y, scalar* z) {
     btVector3 F = reinterpret_cast<btRigidBody*>(body)->getTotalForce();
     *x = F[0];
@@ -701,22 +713,22 @@ extern "C" {
     *vz = v[2];
   }
 
-  void set_linear_damping(kinematic_character_controller* kcc, scalar d) {
+  void kcc_set_linear_damping(kinematic_character_controller* kcc, scalar d) {
     reinterpret_cast<btKinematicCharacterController*>(kcc)->
       setLinearDamping(d);
   }
 
-  scalar get_linear_damping(kinematic_character_controller* kcc) {
+  scalar kcc_get_linear_damping(kinematic_character_controller* kcc) {
     return reinterpret_cast<btKinematicCharacterController*>(kcc)->
       getLinearDamping();
   }
 
-  void set_angular_damping(kinematic_character_controller* kcc, scalar d) {
+  void kcc_set_angular_damping(kinematic_character_controller* kcc, scalar d) {
     reinterpret_cast<btKinematicCharacterController*>(kcc)->
       setAngularDamping(d);
   }
 
-  scalar get_angular_damping(kinematic_character_controller* kcc) {
+  scalar kcc_get_angular_damping(kinematic_character_controller* kcc) {
     return reinterpret_cast<btKinematicCharacterController*>(kcc)->
       getAngularDamping();
   }
